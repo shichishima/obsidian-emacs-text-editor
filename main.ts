@@ -96,6 +96,34 @@ export default class EmacsTextEditorPlugin extends Plugin {
 		});
 
 		this.addCommand({
+			id: 'move-beginning-of-line-like-homekey',
+			name: 'Move cursor to beginning of line (like a HOME key)',
+			editorCallback: (editor: Editor, _: MarkdownView) => {
+				this.withSelectionUpdate(editor, () => {
+					const cursor = editor.getCursor()
+					const line = editor.getLine(cursor.line)
+					const ptnChkbx = /^\s*-\s\[.\]\s/
+					const ptnList = /^\s*-\s/
+					const resultChkbx = line.match(ptnChkbx)
+					if (resultChkbx) {
+						if (resultChkbx[0].length < cursor.ch) {
+							editor.setCursor({ line: cursor.line, ch: resultChkbx[0].length })
+						} else {
+							editor.setCursor({ line: cursor.line, ch: 0 })
+						}
+					} else {
+						const resultList = line.match(ptnList)
+						if (resultList && resultList[0].length < cursor.ch) {
+							editor.setCursor({ line: cursor.line, ch: resultList[0].length })
+						} else {
+							editor.setCursor({ line: cursor.line, ch: 0 })
+						}
+					}
+				})
+			}
+		});
+
+		this.addCommand({
 			id: 'beginning-of-buffer',
 			name: 'Beginning of buffer',
 			editorCallback: (editor: Editor, _: MarkdownView) => {
