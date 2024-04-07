@@ -101,14 +101,17 @@ export default class EmacsTextEditorPlugin extends Plugin {
 			editorCallback: (editor: Editor, _: MarkdownView) => {
 				this.withSelectionUpdate(editor, () => {
 					const cursor = editor.getCursor()
-					const regex = /^\s*(-\s(\[.\]\s)?)?/
-					const result = regex.exec(editor.getLine(cursor.line))
-					if (result !== undefined) {
-						if (result[0].length < cursor.ch) {
-							editor.setCursor({ line: cursor.line, ch: result[0].length })
-						} else {
-							editor.setCursor({ line: cursor.line, ch: 0 })
-						}
+					if (cursor.ch == 0) return;
+
+					const line = editor.getLine(cursor.line)
+					let result = line.match(/^#{1,6}\s/)
+					if (result === null) {
+						result = line.match(/^\s*(-\s(\[.\]\s)?)?/)
+					}
+					if (result !== null && result[0].length < cursor.ch) {
+						editor.setCursor({ line: cursor.line, ch: result[0].length })
+					} else {
+						editor.setCursor({ line: cursor.line, ch: 0 })
 					}
 				})
 			}
