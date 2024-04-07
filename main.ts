@@ -97,7 +97,7 @@ export default class EmacsTextEditorPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'move-beginning-of-line-like-homekey',
-			name: 'Move cursor to beginning of line (like a HOME key)',
+			name: 'Move cursor after heading markdown of beginning of line (like a HOME key)',
 			editorCallback: (editor: Editor, _: MarkdownView) => {
 				this.withSelectionUpdate(editor, () => {
 					const cursor = editor.getCursor()
@@ -105,6 +105,9 @@ export default class EmacsTextEditorPlugin extends Plugin {
 
 					const line = editor.getLine(cursor.line)
 					let result = line.match(/^#{1,6}\s/)
+					if (result === null) {
+						result = line.match(/^\s*\d+\.\s/)
+					}
 					if (result === null) {
 						result = line.match(/^\s*(-\s(\[.\]\s)?)?/)
 					}
