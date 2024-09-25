@@ -48,6 +48,7 @@ make uninstall
 | Alt + w                 | Kill ring save             | Copy a selected region    |
 | Alt + d                 | Kill word                  | Delete chars until end of a word |
 | Ctrl + a                | Move beginning of line     | Move cursor to beginning of line |
+|                         | Move cursor after heading markdown of beginning of line (like a HOME key) | Move cursor to  *head of text*, considering indentation, lists, task lists |
 | Ctrl + e                | Move end of line           | Move cursor to end of line |
 | Ctrl + n                | Next line                  | Move cursor to next line |
 | Ctrl + p                | Previous line              | Move cursor to previous line |
